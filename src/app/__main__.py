@@ -5,13 +5,13 @@ from bottle import Bottle, template
 root = Bottle()
 
 base_url = 'http://localhost:8080'
-
+views = './src/views/'
 
 @root.get('/')
 def showUsers():
     req = requests.get(base_url+'/clientes')
     result = req.json()['result']
-    return template('./src/views/users.tpl', clientes=result)
+    return template(views+'users.tpl', clientes=result)
 
 
 @root.get('/user/<codigo>')
@@ -26,8 +26,11 @@ def infoUser(codigo):
     }
     reservas = result['reservas']
 
-    return template('./src/views/user.tpl', cliente=cliente, reservas=reservas)
+    return template(views+'user.tpl', cliente=cliente, reservas=reservas)
 
+@root.get('/reservas/criar')
+def newReserva():
+    return template(views+'criar-reserva.tpl', base_url=base_url)
 
 if os.environ.get('APP_LOCATION') == 'heroku':
     root.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))

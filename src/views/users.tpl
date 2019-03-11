@@ -1,13 +1,16 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 % include('./src/views/head.tpl')
 % include('./src/views/navbar.tpl')
     <body>
         <div class='container'>
             <div class="card mx-auto mt-4">
-                <h5 class="card-header">Clientes</h5>
-                <table class="card-body table">
-                    <thead>
+                <div class="card-header">
+                    <h5>Clientes</h5>
+                </div>
+                <table class="card-body table mb-0">
+
+                    <tbody>
                         <tr>
                             <th scope="col">Código</th>
                             <th scope="col">Nome</th>
@@ -16,8 +19,6 @@
                             <th scope="col">Ocupações</th>
                             <th scope="col">Ações</th>
                         </tr>
-                    </thead>
-                    <tbody>
                         % for cliente in clientes:
                             <tr>
                             <th scope="row">{{cliente['codigo']}}</th>
@@ -29,7 +30,7 @@
                             % url = '/user/'+str(cliente['codigo'])
                                 <a href={{url}} style=' text-decoration: none '>
                                     <button type="button" class="btn btn-primary">
-                                        <i class="fas fa-plus-square"></i>
+                                        <i class="fas fa-external-link-alt"></i>
                                     </button>
                                 </a>
                             </td>

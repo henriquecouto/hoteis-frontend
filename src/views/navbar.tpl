@@ -9,5 +9,12 @@
         <a class="nav-item nav-link active" href="/">Home <span class="sr-only">(current)</span></a>
       </div>
     </div>
+    <div>
+      <a href="/reservas/criar">
+        <button type="button" class='btn btn-sm btn-light'>
+          Criar Reserva
+        </button>
+      </a>
+    </div>
   </div>
 </nav>
