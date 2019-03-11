@@ -5,8 +5,15 @@
     <body>
         <div class='container'>
             <div class="card mx-auto mt-4">
-                <div class="card-header">
-                    <h5>Clientes</h5>
+                <div class="card-header container">
+                    <div class='row'>
+                        <h5 class='col'>Clientes</h5>
+                        <a href="/clientes/criar">
+                            <button type="button" class='btn btn-sm btn-primary mr-3'>
+                                Cadastrar cliente
+                            </button>
+                        </a>
+                    </div>
                 </div>
                 <table class="card-body table mb-0">
 
@@ -27,7 +34,7 @@
                             <td>{{len(cliente['reservas'])}}</td>
                             <td>0</td>
                             <td>
-                            % url = '/user/'+str(cliente['codigo'])
+                            % url = '/clientes/'+str(cliente['codigo'])
                                 <a href={{url}} style=' text-decoration: none '>
                                     <button type="button" class="btn btn-primary">
                                         <i class="fas fa-external-link-alt"></i>
