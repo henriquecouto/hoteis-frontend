@@ -8,12 +8,13 @@ root = Bottle()
 
 base_url = 'http://localhost:8080'
 views = './src/views/'
-static= './src/static'
+static = './src/static'
 
 
 @root.get('/static/logo')
 def getLogo():
     return static_file('logo.png', root=static)
+
 
 @root.get('/')
 def showUsers():
@@ -36,9 +37,11 @@ def infoUser(codigo):
 
     return template(views+'user.tpl', cliente=cliente, reservas=reservas)
 
+
 @root.get('/clientes/criar')
 def newCliente():
     return template(views+'criar-cliente.tpl', base_url=base_url, success=False, error=None)
+
 
 @root.post('/clientes/criar')
 def newCliente():
@@ -53,7 +56,6 @@ def newCliente():
     elif cliente['contato'] == '':
         return template(views+'criar-cliente.tpl', base_url=base_url, success=False, error='Voce precisa informar um contato')
 
-
     cliente['codigo'] = int(cliente['codigo'])
 
     req = requests.post(base_url+'/clientes', json=cliente)
@@ -64,6 +66,7 @@ def newCliente():
         return template(views+'criar-cliente.tpl', base_url=base_url, success=True, error=None)
     else:
         return template(views+'criar-cliente.tpl', base_url=base_url, success=False, error=resposta['result'])
+
 
 @root.get('/reservas/criar')
 def newReserva():
@@ -108,6 +111,28 @@ def newReserva():
     else:
         return template(views+'criar-reserva.tpl', base_url=base_url, success=False, error=resposta['result'])
 
+
+@root.get('/quartos')
+def showQuartos():
+    req = requests.get(base_url+'/quartos')
+    result = req.json()['result']
+    return template(views+'quartos.tpl', quartos=result)
+
+
+@root.get('/quartos/<numero>')
+def infoQuarto(numero):
+    req = requests.get(base_url+'/quartos/'+str(numero))
+    result = req.json()['result']
+
+    quarto = {
+        'numero': result['numero'],
+        'tipo': result['tipo'],
+        'diaria': result['diaria'],
+        'capacidade': result['capacidade']
+    }
+    reservas = result['reservas']
+
+    return template(views+'quarto.tpl', quarto=quarto, reservas=reservas)
 
 if os.environ.get('APP_LOCATION') == 'heroku':
     root.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
