@@ -23,7 +23,7 @@
                     <h5>Nova Reserva</h5>
                 </div>
                 <div class='card-body'>
-                    <form action='/reservas/criar' method='post' enctype='application/json'>
+                    <form action='/reservas/criar' method='post' enctype='application/json' accept-charset="ISO-8859-1">
                         <div class="form-group">
                             <label for="cliente">Código do cliente</label>
                             <input 

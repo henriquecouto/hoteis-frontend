@@ -134,8 +134,9 @@ def infoQuarto(numero):
 
     return template(views+'quarto.tpl', quarto=quarto, reservas=reservas)
 
-#heroku
+
+# heroku
 root.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
 
-#Local
+# Local
 # root.run(host='localhost', port=8081, debug=True, reloader=True)

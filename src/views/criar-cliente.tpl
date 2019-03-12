@@ -23,7 +23,7 @@
                     <h5>Novo Cliente</h5>
                 </div>
                 <div class='card-body'>
-                    <form action='/clientes/criar' method='post' enctype='application/json'>
+                    <form action='/clientes/criar' method='post' enctype='application/json' accept-charset="ISO-8859-1">
                         <div class="form-group">
                             <label for="codigo">Código</label>
                             <input 
