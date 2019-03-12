@@ -6,7 +6,7 @@ from bottle import Bottle, template, request, static_file
 
 root = Bottle()
 
-base_url = 'http://localhost:8080'
+base_url = 'https://hoteltop.herokuapp.com'
 views = './src/views/'
 static = './src/static'
 
