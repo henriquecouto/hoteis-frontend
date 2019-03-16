@@ -1,14 +1,40 @@
 import os
 import requests
 import json
+import datetime
 from bson.json_util import dumps
 from bottle import Bottle, template, request, static_file
 
 root = Bottle()
 
-base_url = 'https://hoteltop.herokuapp.com'
+base_url = 'http://localhost:8080'  # 'https://hoteltop.herokuapp.com'
 views = './src/views/'
 static = './src/static'
+
+
+def changeReservaStatus(request):
+    error = None
+
+    if(request.method == 'POST'):
+        alteracao = json.loads(dumps(request.forms))
+
+        alteracoes = {'status': alteracao['status']}
+
+        if (alteracao['status'] == 'Check-Out'):
+            date = str(datetime.date.today())
+            date = date.split('-')
+            date = date[0]+date[1]+date[2]
+            alteracoes['saida'] = int(date)
+
+        real_alteracao = {
+            "_id": alteracao['_id'],
+            "alteracoes": alteracoes
+        }
+        res = requests.put(base_url+'/reservas', json=real_alteracao)
+        if(res.json()['result'] == False):
+            error = "Erro ao realizar "+alteracao['status']
+
+    return error
 
 
 @root.get('/static/logo')
@@ -23,8 +49,11 @@ def showUsers():
     return template(views+'users.tpl', clientes=result)
 
 
-@root.get('/clientes/<codigo>')
+@root.route('/clientes/<codigo>', method=['GET', 'POST'])
 def infoUser(codigo):
+
+    error = changeReservaStatus(request)
+
     req = requests.get(base_url+'/clientes/codigo/'+str(codigo))
     result = req.json()['results']
 
@@ -35,7 +64,7 @@ def infoUser(codigo):
     }
     reservas = result['reservas']
 
-    return template(views+'user.tpl', cliente=cliente, reservas=reservas)
+    return template(views+'user.tpl', cliente=cliente, reservas=reservas, error=error)
 
 
 @root.get('/clientes/criar')
@@ -119,8 +148,11 @@ def showQuartos():
     return template(views+'quartos.tpl', quartos=result)
 
 
-@root.get('/quartos/<numero>')
+@root.route('/quartos/<numero>', method=['GET', 'POST'])
 def infoQuarto(numero):
+
+    error = changeReservaStatus(request)
+
     req = requests.get(base_url+'/quartos/'+str(numero))
     result = req.json()['result']
 
@@ -136,7 +168,7 @@ def infoQuarto(numero):
 
 
 # heroku
-root.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+# root.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
 
 # Local
-# root.run(host='localhost', port=8081, debug=True, reloader=True)
+root.run(host='localhost', port=8081, debug=True, reloader=True)

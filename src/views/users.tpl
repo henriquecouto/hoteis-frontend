@@ -23,7 +23,6 @@
                             <th scope="col">Nome</th>
                             <th scope="col">Contato</th>
                             <th scope="col">Reservas</th>
-                            <th scope="col">Ocupações</th>
                             <th scope="col">Ações</th>
                         </tr>
                         % for cliente in clientes:
@@ -32,11 +31,10 @@
                             <td>{{cliente['nome']}}</td>
                             <td>{{cliente['contato']}}</td>
                             <td>{{len(cliente['reservas'])}}</td>
-                            <td>0</td>
                             <td>
                             % url = '/clientes/'+str(cliente['codigo'])
                                 <a href={{url}} style=' text-decoration: none '>
-                                    <button type="button" class="btn btn-primary">
+                                    <button type="button" class="btn btn-primary" title="Visualizar Cliente">
                                         <i class="fas fa-external-link-alt"></i>
                                     </button>
                                 </a>
