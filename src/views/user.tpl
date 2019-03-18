@@ -52,6 +52,7 @@
                                 <th scope="col">Entrada</th>
                                 <th scope="col">Saída</th>
                                 <th scope="col">Quarto</th>
+                                <th scope="col">Hóspedes</th>
                                 <th scope="col">Status</th>
                                 <th scope="col">Valor</th>
                                 <th scope="col">Ações</th>
@@ -66,6 +67,7 @@
                                 <td>{{saida[6]}}{{saida[7]}}/{{saida[4]}}{{saida[5]}}/{{saida[0]}}{{saida[1]}}{{saida[2]}}{{saida[3]}}
                                 </td>
                                 <td>{{reserva['quarto']}}</td>
+                                <td>{{reserva['hospedes']}}</td>
                                 <td>{{reserva['status']}}</td>
                                 <td>
                                     % if 'valor' in reserva:
