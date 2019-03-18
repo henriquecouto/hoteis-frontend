@@ -21,10 +21,9 @@ def changeReservaStatus(request):
         alteracoes = {'status': alteracao['status']}
         error = alteracoes['status'] + ' realizado com sucesso!'
 
-        if(alteracao['hospedes'] == ''):
-            return "Você precisa informar o número de hospedes"
-
-        if(alteracoes['status'] == 'Check-In'):
+        if(alteracao['status'] == 'Check-In'):
+            if(alteracao['hospedes'] == ''):
+                return "Você precisa informar o número de hospedes"
             alteracoes['hospedes'] = int(alteracao['hospedes'])
 
         tipoData = 'entrada' if alteracao['status']=='Check-In' else 'saida'
