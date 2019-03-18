@@ -7,7 +7,7 @@ from bottle import Bottle, template, request, static_file
 
 root = Bottle()
 
-base_url = 'https://hoteltop.herokuapp.com'
+base_url = 'http://localhost:8080' #'https://hoteltop.herokuapp.com'
 views = './src/views/'
 static = './src/static'
 
@@ -15,32 +15,47 @@ static = './src/static'
 def changeReservaStatus(request):
     error = None
 
+
     if(request.method == 'POST'):
         alteracao = json.loads(dumps(request.forms))
-
         alteracoes = {'status': alteracao['status']}
+        error = alteracoes['status'] + ' realizado com sucesso!'
 
-        if (alteracao['status'] == 'Check-Out'):
-            date = str(datetime.date.today())
-            date = date.split('-')
-            date = date[0]+date[1]+date[2]
-            alteracoes['saida'] = int(date)
+        if(alteracao['hospedes'] == ''):
+            return "Você precisa informar o número de hospedes"
+
+        if(alteracoes['status'] == 'Check-In'):
+            alteracoes['hospedes'] = int(alteracao['hospedes'])
+
+        tipoData = 'entrada' if alteracao['status']=='Check-In' else 'saida'
+
+        if(alteracao[tipoData] == ''):
+            return "Você precisa informar uma data"
+
+        date = alteracao[tipoData]
+        date = date.split('-')
+        date = date[0]+date[1]+date[2]
+        alteracoes[tipoData] = int(date)
 
         real_alteracao = {
             "_id": alteracao['_id'],
             "alteracoes": alteracoes
         }
+        
         res = requests.put(base_url+'/reservas', json=real_alteracao)
-        if(res.json()['result'] == False):
-            error = "Erro ao realizar "+alteracao['status']
+
+        if(res and res.json()['result'] == False):
+            error = "Erro: "+res.json()['message']
 
     return error
-
 
 @root.get('/static/logo')
 def getLogo():
     return static_file('logo.png', root=static)
 
+@root.get('/style')
+def getLogo():
+    return static_file('style.css', root=static)
 
 @root.get('/')
 def showUsers():
@@ -51,7 +66,6 @@ def showUsers():
 
 @root.route('/clientes/<codigo>', method=['GET', 'POST'])
 def infoUser(codigo):
-
     error = changeReservaStatus(request)
 
     req = requests.get(base_url+'/clientes/codigo/'+str(codigo))
@@ -168,7 +182,7 @@ def infoQuarto(numero):
 
 
 # heroku
-root.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+# root.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
 
 # Local
-# root.run(host='localhost', port=8081, debug=True, reloader=True)
+root.run(host='localhost', port=8081, debug=True, reloader=True)
