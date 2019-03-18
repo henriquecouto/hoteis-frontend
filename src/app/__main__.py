@@ -177,7 +177,7 @@ def infoQuarto(numero):
     }
     reservas = result['reservas']
 
-    return template(views+'quarto.tpl', quarto=quarto, reservas=reservas)
+    return template(views+'quarto.tpl', quarto=quarto, reservas=reservas, error=error)
 
 
 # heroku
