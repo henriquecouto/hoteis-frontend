@@ -7,14 +7,14 @@ from bottle import Bottle, template, request, static_file
 
 root = Bottle()
 
-base_url = 'https://hoteltop.herokuapp.com' #'http://localhost:8080'
+base_url = 'https://hoteltop.herokuapp.com'
+# base_url = http://localhost:8080'
 views = './src/views/'
 static = './src/static'
 
 
 def changeReservaStatus(request):
     error = None
-
 
     if(request.method == 'POST'):
         alteracao = json.loads(dumps(request.forms))
