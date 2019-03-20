@@ -77,7 +77,7 @@
                                 </td>
                                 <td>
                                     % if reserva['status'] == 'Aguardando':
-                                    % popup = {'nome': 'Check-In', 'url': 'popup-ci-'+reserva['_id']['$oid']}
+                                    % popup = {'nome': 'Check-In', 'type': 'cliente', 'url': 'popup-ci-'+reserva['_id']['$oid']}
                                     <a href={{"#popup-ci-"+reserva['_id']['$oid']}}>
                                         <button class="btn btn-primary">
                                             <i class="fas fa-check-square"></i>
@@ -88,7 +88,7 @@
 
                                     %end
                                     % if reserva['status'] == 'Check-In':
-                                    % popup = {'nome': 'Check-Out', 'url': 'popup-co-'+reserva['_id']['$oid']}
+                                    % popup = {'nome': 'Check-Out', 'type': 'cliente', 'url': 'popup-co-'+reserva['_id']['$oid']}
                                     <a href={{"#popup-co-"+reserva['_id']['$oid']}}>
                                         <button class="btn btn-primary">
                                             <i class="fas fa-sign-out-alt"></i>
