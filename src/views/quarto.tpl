@@ -74,79 +74,24 @@
                                 </td>
                                 <td>
                                     % if reserva['status'] == 'Aguardando':
+                                    % popup = {'nome': 'Check-In', 'url': 'popup-ci-'+reserva['_id']['$oid']}
                                     <a href={{"#popup-ci-"+reserva['_id']['$oid']}}>
                                         <button class="btn btn-primary">
                                             <i class="fas fa-check-square"></i>
                                         </button
                                     </a>
 
-                                    <div id={{"popup-ci-"+reserva['_id']['$oid']}} class="overlay">
-                                        <div class="card popup">
-                                            <div class="card-header">
-                                                <h4>Check-In</h4>
-                                                <a class="close" href="#">&times;</a>
-                                            </div>
-                                            <div class="card-body">
-                                                <form action={{"/quartos/"+str(quarto['numero'])}} method='post' enctype='application/json'>
-                                                    <input name="_id" value={{reserva['_id']['$oid']}} style="display: none;" />
-
-                                                    <input name="status" value="Check-In" style="display: none;" />
-                                                    
-                                                    <div class="form-group">
-                                                        <label for="hospedes">Número de hóspedes</label>
-                                                        <input 
-                                                            class="form-control" 
-                                                            id="hospedes" 
-                                                            name="hospedes" 
-                                                            placeholder="Insira o número..." 
-                                                            max=5
-                                                            min=1
-                                                            type="number"/>
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <label for="entrada">Data</label>
-                                                        <input class="form-control" id="entrada" name="entrada" type="date"/>
-                                                    </div>
-                                                    
-                                                    <button type="submit" class="btn btn-primary" title="Check-In">
-                                                        Continuar
-                                                    </button>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    %include('./src/views/popup.tpl')
 
                                     %end
                                     % if reserva['status'] == 'Check-In':
+                                    % popup = {'nome': 'Check-Out', 'url': 'popup-co-'+reserva['_id']['$oid']}
                                     <a href={{"#popup-co-"+reserva['_id']['$oid']}}>
                                         <button class="btn btn-primary">
                                             <i class="fas fa-sign-out-alt"></i>
                                         </button>
                                     </a>
-                                    <div id={{"popup-co-"+reserva['_id']['$oid']}} class="overlay">
-                                        <div class="card popup">
-                                            <div class="card-header">
-                                                <h4>Check-Out</h4>
-                                                <a class="close" href="#">&times;</a>
-                                            </div>
-                                            <div class="card-body">
-                                                <form action={{"/quartos/"+str(quarto['numero'])}} method='post' enctype='application/json'>
-                                                    <input name="_id" value={{reserva['_id']['$oid']}} style="display: none;" />
-
-                                                    <input name="status" value="Check-Out" style="display: none;" />
-                                                    
-                                                    <div class="form-group">
-                                                        <label for="saida">Data</label>
-                                                        <input class="form-control" id="saida" name="saida" type="date"/>
-                                                    </div>
-                                                    
-                                                    <button type="submit" class="btn btn-primary" title="Check-In">
-                                                        Continuar
-                                                    </button>
-                                                </form>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    %include('./src/views/popup.tpl')                                    
                                     %end
                                 </td>
                             </tr>
