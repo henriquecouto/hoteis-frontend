@@ -8,7 +8,7 @@ from bottle import Bottle, template, request, static_file
 root = Bottle()
 
 base_url = 'https://hoteltop.herokuapp.com'
-# base_url = http://localhost:8080'
+# base_url = 'http://localhost:8080'
 views = './src/views/'
 static = './src/static'
 
@@ -26,15 +26,16 @@ def changeReservaStatus(request):
                 return "Você precisa informar o número de hospedes"
             alteracoes['hospedes'] = int(alteracao['hospedes'])
 
-        tipoData = 'entrada' if alteracao['status']=='Check-In' else 'saida'
+        # tipoData = 'entrada' if alteracao['status']=='Check-In' else 'saida'
 
-        if(alteracao[tipoData] == ''):
-            return "Você precisa informar uma data"
+        if(alteracao['status'] == 'Check-Out'):
+            if(alteracao['saida'] == ''):
+                return "Você precisa informar uma data"
 
-        date = alteracao[tipoData]
-        date = date.split('-')
-        date = date[0]+date[1]+date[2]
-        alteracoes[tipoData] = int(date)
+            date = alteracao['saida']
+            date = date.split('-')
+            date = date[0]+date[1]+date[2]
+            alteracoes['saida'] = int(date)
 
         real_alteracao = {
             "_id": alteracao['_id'],
