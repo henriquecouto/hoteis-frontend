@@ -59,7 +59,11 @@ def getLogo():
 
 @root.get('/')
 def home():
-    return template(views+'home.tpl')
+
+    req = requests.get(base_url+'/reservas')
+    reservas = req.json()['result']
+
+    return template(views+'home.tpl', reservas=reservas)
 
 @root.get('/clientes')
 def showUsers():

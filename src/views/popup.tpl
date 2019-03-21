@@ -4,7 +4,14 @@
             <h3>Fazer {{popup['nome']}}</h3>
         </div>
         <div class="card-body">
-            <form action={{"/"+popup['type']+"s/"+str(cliente['codigo'] if popup['type']=='cliente' else quarto['numero'])}} method='post' enctype='application/json'>
+            <form action={{
+                "/"+popup['type']+"s/"+str(
+
+                    cliente['codigo'] if popup['type']=='cliente' 
+                    quarto['numero'] elif popup['type']=='quarto'
+                    else reserva['_id']['$oid']
+                
+                )}} method='post' enctype='application/json'>
                 <input name="_id" value={{reserva['_id']['$oid']}} style="display: none;" />
 
                 <input name="status" value={{popup['nome']}} style="display: none;" />
