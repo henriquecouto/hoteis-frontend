@@ -58,6 +58,10 @@ def getLogo():
     return static_file('style.css', root=static)
 
 @root.get('/')
+def home():
+    return template(views+'home.tpl')
+
+@root.get('/clientes')
 def showUsers():
     req = requests.get(base_url+'/clientes')
     result = req.json()['result']
@@ -182,7 +186,7 @@ def infoQuarto(numero):
 
 
 # heroku
-root.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+# root.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
 
 # Local
-# root.run(host='localhost', port=8081, debug=True, reloader=True)
+root.run(host='localhost', port=8081, debug=True, reloader=True)
