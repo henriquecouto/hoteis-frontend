@@ -4,14 +4,9 @@
             <h3>Fazer {{popup['nome']}}</h3>
         </div>
         <div class="card-body">
-            <form action={{
-                "/"+popup['type']+"s/"+str(
-
-                    cliente['codigo'] if popup['type']=='cliente' 
-                    quarto['numero'] elif popup['type']=='quarto'
-                    else reserva['_id']['$oid']
+            <form id='popupForm' action={{"/" if popup['type']=='reserva' else "/"+popup['type']+"s/"+str(cliente['codigo'] if popup['type']=='cliente'else quarto['numero']) }} method='post' enctype='application/json'>
+                <input id='popup' name='typeForm' value='popup' style='display: none' />
                 
-                )}} method='post' enctype='application/json'>
                 <input name="_id" value={{reserva['_id']['$oid']}} style="display: none;" />
 
                 <input name="status" value={{popup['nome']}} style="display: none;" />
@@ -30,7 +25,7 @@
                 % end
                 % if popup['nome'] == 'Check-Out':
                 <div class="form-group">
-                    <label for="entrada">Data</label>
+                    <label for="saida">Data</label>
                     <input 
                         class="form-control" 
                         id="saida" 
@@ -44,7 +39,8 @@
                             Cancelar
                         </button>
                     </a>
-                    <button type="submit" class="btn btn-primary" title="Check-In">
+                    <button type="submit" class="btn btn-primary" 
+                        title="Check-In">
                         Continuar
                     </button>
                 </div>

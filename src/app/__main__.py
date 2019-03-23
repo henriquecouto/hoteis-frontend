@@ -7,11 +7,10 @@ from bottle import Bottle, template, request, static_file
 
 root = Bottle()
 
-base_url = 'https://hoteltop.herokuapp.com'
-# base_url = 'http://localhost:8080'
+# base_url = 'https://hoteltop.herokuapp.com'
+base_url = 'http://localhost:8080'
 views = './src/views/'
 static = './src/static'
-
 
 def changeReservaStatus(request):
     error = None
@@ -57,13 +56,39 @@ def getLogo():
 def getLogo():
     return static_file('style.css', root=static)
 
-@root.get('/')
+@root.route('/', method=['GET', 'POST'])
 def home():
+    formData = json.loads(dumps(request.forms))
+    error = None
+    date = ''
+
+    if formData and formData['typeForm']=='popup':
+        error = changeReservaStatus(request)
+
+    if (request.method == 'POST' and formData['typeForm']!='popup'):
+        date = formData['month']
+        date = date.split('-')
+        date = date[0]+date[1]
+        print(date)
+    else:
+        date = datetime.date.today()
+        date = str(date)
+        date = date.split('-')
+        date = date[0]+date[1]
 
     req = requests.get(base_url+'/reservas')
     reservas = req.json()['result']
 
-    return template(views+'home.tpl', reservas=reservas)
+    req2 = requests.get(base_url+'/quartos/ocupados')
+    quartosOcupados = req2.json()['result']
+
+    req3 = requests.get(base_url+'/reservas/recebimento/'+date)
+    recebimento = req3.json()['result']
+
+    print(formData)
+
+    return template(views+'home.tpl', reservas=reservas, quartosOcupados=quartosOcupados, recebimento=recebimento, error=error)
+
 
 @root.get('/clientes')
 def showUsers():

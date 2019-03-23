@@ -6,6 +6,17 @@
 
 <body>
     <div class='container mt-4'>
+        %if error:
+            %if 'sucesso' in error:
+            <div class="alert alert-success mt-2" role="alert">
+                {{error}}
+            </div>
+            %else:
+                <div class="alert alert-danger mt-2" role="alert">
+                {{error}}
+            </div>
+            %end
+        %end
         <div class='row'>
             <div class='col-sm'>
                 <div class='card'>
@@ -23,7 +34,7 @@
                         Quartos Ocupados
                     </div>
                     <div class='card-body'>
-                        <h2>8</h2>
+                        <h2>{{quartosOcupados}}</h2>
                     </div>
                 </div>
             </div>
@@ -33,16 +44,10 @@
                         Recebimento Mensal
                     </div>
                     <div class='card-body'>
-                        <h2>R$00,00</h2>
-                        <div class='row'>
-                            <label for="start">Selecionar mês:</label>
-                            % date = datetime.date.today()
-                            % date = str(date)
-                            % date = date.split('-')
-
-                            <input class='form-control' type="month" id="start" name="start"
-                                value={{date[0]+'-'+date[1]}}>
-                        </div>
+                        <h2>R${{recebimento}}</h2>
+                        <hr/>
+                        % typeForm = 'recebimento'
+                        % include('./src/views/formMonth.tpl')
                     </div>
                 </div>
             </div>
@@ -53,15 +58,9 @@
                     </div>
                     <div class='card-body'>
                         <h2>200</h2>
-                        <div class='row'>
-                            <label for="start">Selecionar mês:</label>
-                            % date = datetime.date.today()
-                            % date = str(date)
-                            % date = date.split('-')
-
-                            <input class='form-control' type="month" id="start" name="start"
-                                value={{date[0]+'-'+date[1]}}>
-                        </div>
+                        <hr/>
+                        % typeForm = 'hospedes'
+                        % include('./src/views/formMonth.tpl')
                     </div>
                 </div>
             </div>
@@ -75,10 +74,12 @@
 
                 <tbody>
                     <tr>
-                        <th scope="col">Código</th>
-                        <th scope="col">Nome</th>
-                        <th scope="col">Contato</th>
-                        <th scope="col">Reservas</th>
+                        <th scope="col">Data de Entrada</th>
+                        <th scope="col">Data de Saída</th>
+                        <th scope="col">Quarto</th>
+                        <th scope="col">Hóspedes</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Valor</th>
                         <th scope="col">Ações</th>
                     </tr>
                     % for reserva in reservas:
