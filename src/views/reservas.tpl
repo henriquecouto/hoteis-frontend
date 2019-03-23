@@ -2,78 +2,32 @@
 <html lang="pt-br">
 % include('./src/views/head.tpl')
 % include('./src/views/navbar.tpl')
+% import datetime
 
 % months = ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro']
 
 <body>
     <div class='container mt-4'>
-        %if error:
-            %if 'sucesso' in error:
-            <div class="alert alert-success mt-2" role="alert">
-                {{error}}
-            </div>
-            %else:
-                <div class="alert alert-danger mt-2" role="alert">
-                {{error}}
-            </div>
-            %end
-        %end
-        <div class='row'>
-            <div class='col-sm'>
-                <div class='card'>
-                    <div class='card-header'>
-                        Total de Quartos
-                    </div>
-                    <div class='card-body'>
-                        <h1>10</h1>
-                    </div>
-                </div>
-            
-                <div class='card mt-4'>
-                    <div class='card-header'>
-                        Quartos Ocupados
-                    </div>
-                    <div class='card-body'>
-                        <h1>{{quartosOcupados}}</h1>
-                    </div>
-                </div>
-            </div>
-            <div class='col-sm'>
-                <div class='card'>
-                    <div class='card-header'>
-                        Recebimento Mensal
-                    </div>
-                    <div class='card-body'>
-                        <p>{{months[monthR-1]}} de {{yearR}}</p>
-                        <h2>R${{recebimento}}</h2>
-                        <hr/>
-                        % typeForm = 'recebimento'
-                        % include('./src/views/formMonth.tpl')
-                    </div>
-                </div>
-            </div>
-            <div class='col-sm'>
-                <div class='card'>
-                    <div class='card-header'>
-                        Total de Hospedes Mensal
-                    </div>
-                    <div class='card-body'>
-                        <p>{{months[monthH-1]}} de {{yearH}}</p>
-                        <h2>{{hospedes}}</h2>
-                        <hr/>
-                        % typeForm = 'hospedes'
-                        % include('./src/views/formMonth.tpl')
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <div class="card mx-auto mt-4 mb-4">
             <div class="card-header">
-                Reservas para Hoje
+                <div class='row'>
+                    <h5 class='col'>
+                        Reservas de {{months[month-1]}}
+                    </h5>
+                    <div class='col-3'>
+                        <form action='/reservas' method='post' enctype='application/json'>
+                            <div class='row'>
+                            % today = datetime.date.today()
+                            % today = str(today).split('-')
+                            % today = today[0]+'-'+today[1]
+                                <input title='Selecione um mês' class="form-control form-control-sm mr-2 col-9" type="month" name="month" value={{today}} />
+                                <button type='submit' class='btn btn-sm btn-primary col-2' title='OK'>OK</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
             <table class="card-body table mb-0">
-
                 <tbody>
                     <tr>
                         <th scope="col">Data de Entrada</th>
@@ -105,7 +59,7 @@
                             % if reserva['status'] == 'Aguardando':
                             % popup = {'nome': 'Check-In', 'type': 'reserva', 'url': 'popup-ci-'+reserva['_id']['$oid']}
                             <a href={{"#popup-ci-"+reserva['_id']['$oid']}}>
-                                <button class="btn btn-primary">
+                                <button class="btn btn-primary" title='Fazer Check-In'>
                                     <i class="fas fa-check-square"></i>
                                 </button>
                             </a>
@@ -116,7 +70,7 @@
                             % if reserva['status'] == 'Check-In':
                             % popup = {'nome': 'Check-Out', 'type': 'reserva', 'url': 'popup-co-'+reserva['_id']['$oid']}
                             <a href={{"#popup-co-"+reserva['_id']['$oid']}}>
-                                <button class="btn btn-primary">
+                                <button class="btn btn-primary" title='Fazer Check-Out'>
                                     <i class="fas fa-sign-out-alt"></i>
                                 </button>
                             </a>

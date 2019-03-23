@@ -31,7 +31,7 @@
                             <td>
                             % url = '/quartos/'+str(quarto['numero'])
                                 <a href={{url}} style=' text-decoration: none '>
-                                    <button type="button" class="btn btn-primary">
+                                    <button type="button" class="btn btn-primary" title='Visualizar Quarto'>
                                         <i class="fas fa-external-link-alt"></i>
                                     </button>
                                 </a>

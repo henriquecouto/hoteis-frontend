@@ -56,38 +56,71 @@ def getLogo():
 def getLogo():
     return static_file('style.css', root=static)
 
+dateR = ''
+monthR = None
+yearR= None
+dateH = ''
+monthH = None
+yearH = None
+
 @root.route('/', method=['GET', 'POST'])
 def home():
+
     formData = json.loads(dumps(request.forms))
     error = None
-    date = ''
+    global dateH, dateR, monthH, monthR, yearH, yearR
 
-    if formData and formData['typeForm']=='popup':
+    if request.method=='GET':
+        dateR = datetime.date.today()
+        dateR = str(dateR)
+        dateR = dateR.split('-')
+        monthR = int(dateR[1])
+        yearR = int(dateR[0])
+        dateR = dateR[0]+dateR[1]
+
+        dateH = datetime.date.today()
+        dateH = str(dateH)
+        dateH = dateH.split('-')
+        monthH = int(dateH[1])
+        yearH = int(dateH[0])
+        dateH = dateH[0]+dateH[1]
+    elif formData and formData['typeForm']=='popup':
         error = changeReservaStatus(request)
+    elif formData and formData['typeForm']=='recebimento':
+        dateR = formData['month']
+        dateR = dateR.split('-')
+        monthR = int(dateR[1])
+        yearR = int(dateR[0])
+        dateR = dateR[0]+dateR[1]
+    elif formData and formData['typeForm']=='hospedes':
+        dateH = formData['month']
+        dateH = dateH.split('-')
+        monthH = int(dateH[1])
+        yearH = int(dateH[0])
+        dateH = dateH[0]+dateH[1]
 
-    if (request.method == 'POST' and formData['typeForm']!='popup'):
-        date = formData['month']
-        date = date.split('-')
-        date = date[0]+date[1]
-        print(date)
-    else:
-        date = datetime.date.today()
-        date = str(date)
-        date = date.split('-')
-        date = date[0]+date[1]
+    # req = requests.get(base_url+'/reservas')
+    # reservas = req.json()['result']
 
-    req = requests.get(base_url+'/reservas')
+    today = datetime.date.today()
+    today = str(today).split('-')
+    today = today[0]+today[1]+today[2]
+
+    req = requests.get(base_url+'/reservas/day/'+today)
     reservas = req.json()['result']
 
     req2 = requests.get(base_url+'/quartos/ocupados')
     quartosOcupados = req2.json()['result']
 
-    req3 = requests.get(base_url+'/reservas/recebimento/'+date)
+    req3 = requests.get(base_url+'/reservas/recebimento/'+dateR)
     recebimento = req3.json()['result']
+
+    req4 = requests.get(base_url+'/clientes/mensal/'+dateH)
+    hospedes = req4.json()['result']
 
     print(formData)
 
-    return template(views+'home.tpl', reservas=reservas, quartosOcupados=quartosOcupados, recebimento=recebimento, error=error)
+    return template(views+'home.tpl', reservas=reservas, quartosOcupados=quartosOcupados, recebimento=recebimento, hospedes=hospedes, monthR=monthR, yearR=yearR, monthH=monthH, yearH=yearH, error=error)
 
 
 @root.get('/clientes')
@@ -187,6 +220,23 @@ def newReserva():
     else:
         return template(views+'criar-reserva.tpl', base_url=base_url, success=False, error=resposta['result'])
 
+@root.route('/reservas', method=['GET', 'POST'])
+def getAllReservas():
+    month = datetime.date.today()
+    month = str(month).split('-')
+    just_month = month[1]
+    month = month[0]+month[1]
+
+    if request.method=='POST':
+        month = json.loads(dumps(request.forms))['month']
+        month = month.split('-')
+        just_month = month[1]
+        month = month[0]+month[1]
+
+    req = requests.get(base_url+'/reservas/month/'+month)
+    reservas = req.json()['result']
+
+    return template(views+'reservas.tpl', reservas=reservas, month=int(just_month))
 
 @root.get('/quartos')
 def showQuartos():

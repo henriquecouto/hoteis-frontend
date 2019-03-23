@@ -12,6 +12,7 @@
         <a class="nav-item nav-link active" href="/">Página Inicial<span class="sr-only">(current)</span></a>
         <a class="nav-item nav-link active" href="/clientes">Clientes<span class="sr-only">(current)</span></a>
         <a class="nav-item nav-link active" href="/quartos">Quartos<span class="sr-only">(current)</span></a>
+        <a class="nav-item nav-link active" href="/reservas">Reservas<span class="sr-only">(current)</span></a>
       </div>
     </div>
     <div>

@@ -79,7 +79,7 @@
                                     % if reserva['status'] == 'Aguardando':
                                     % popup = {'nome': 'Check-In', 'type': 'cliente', 'url': 'popup-ci-'+reserva['_id']['$oid']}
                                     <a href={{"#popup-ci-"+reserva['_id']['$oid']}}>
-                                        <button class="btn btn-primary">
+                                        <button class="btn btn-primary" title='Fazer Check-In'>
                                             <i class="fas fa-check-square"></i>
                                         </button>
                                     </a>
@@ -90,7 +90,7 @@
                                     % if reserva['status'] == 'Check-In':
                                     % popup = {'nome': 'Check-Out', 'type': 'cliente', 'url': 'popup-co-'+reserva['_id']['$oid']}
                                     <a href={{"#popup-co-"+reserva['_id']['$oid']}}>
-                                        <button class="btn btn-primary">
+                                        <button class="btn btn-primary" title='Fazer Check-Out'>
                                             <i class="fas fa-sign-out-alt"></i>
                                         </button>
                                     </a>
