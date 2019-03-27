@@ -5,9 +5,20 @@
     <body>
         <div class='container'>
             <div class="card mx-auto mt-4">
-                <div class="card-header container">
+                <div class="card-header container" style="justify: space-between">
                     <div class='row'>
                         <h5 class='col'>Clientes</h5>
+                       
+                        <form class='col-4' action='/clientes' method='post' enctype='application/json' accept-charset="ISO-8859-1">
+                            <input 
+                                class="form-control form-control-sm" 
+                                id="search" 
+                                name="search" 
+                                placeholder="Buscar cliente..." 
+                                min=1
+                                type="text"/>
+                        </form>
+
                         <a href="/clientes/criar">
                             <button type="button" class='btn btn-sm btn-primary mr-3'>
                                 Cadastrar cliente

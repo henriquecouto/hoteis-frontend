@@ -123,9 +123,18 @@ def home():
     return template(views+'home.tpl', reservas=reservas, quartosOcupados=quartosOcupados, recebimento=recebimento, hospedes=hospedes, monthR=monthR, yearR=yearR, monthH=monthH, yearH=yearH, error=error)
 
 
-@root.get('/clientes')
+@root.route('/clientes', method=['GET', 'POST'])
 def showUsers():
-    req = requests.get(base_url+'/clientes')
+
+    urlReq = base_url+'/clientes'
+
+    if request.method=='POST':
+        search = json.loads(dumps(request.forms))['search']
+        if search:
+            urlReq = urlReq+'/nome/'+search
+
+    req = requests.get(urlReq)
+    print(req.json())
     result = req.json()['result']
     return template(views+'users.tpl', clientes=result)
 
@@ -270,7 +279,7 @@ def infoQuarto(numero):
 
 
 # heroku
-root.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+# root.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
 
 # Local
-# root.run(host='localhost', port=8081, debug=True, reloader=True)
+root.run(host='localhost', port=8081, debug=True, reloader=True)
