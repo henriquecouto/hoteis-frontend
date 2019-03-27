@@ -99,15 +99,17 @@ def home():
         yearH = int(dateH[0])
         dateH = dateH[0]+dateH[1]
 
-    # req = requests.get(base_url+'/reservas')
-    # reservas = req.json()['result']
-
     today = datetime.date.today()
     today = str(today).split('-')
     today = today[0]+today[1]+today[2]
 
     req = requests.get(base_url+'/reservas/day/'+today)
     reservas = req.json()['result']
+
+    for reserva in reservas:
+        reqCliente = requests.get(base_url+'/clientes/codigo/'+str(reserva['cliente']))
+        cliente = reqCliente.json()['results']['nome']
+        reserva['nameCliente'] = cliente
 
     req2 = requests.get(base_url+'/quartos/ocupados')
     quartosOcupados = req2.json()['result']
@@ -117,8 +119,6 @@ def home():
 
     req4 = requests.get(base_url+'/clientes/mensal/'+dateH)
     hospedes = req4.json()['result']
-
-    print(formData)
 
     return template(views+'home.tpl', reservas=reservas, quartosOcupados=quartosOcupados, recebimento=recebimento, hospedes=hospedes, monthR=monthR, yearR=yearR, monthH=monthH, yearH=yearH, error=error)
 
@@ -235,6 +235,11 @@ def getAllReservas():
 
     req = requests.get(base_url+'/reservas/month/'+month)
     reservas = req.json()['result']
+
+    for reserva in reservas:
+        reqCliente = requests.get(base_url+'/clientes/codigo/'+str(reserva['cliente']))
+        cliente = reqCliente.json()['results']['nome']
+        reserva['nameCliente'] = cliente
 
     return template(views+'reservas.tpl', reservas=reservas, month=int(just_month))
 
