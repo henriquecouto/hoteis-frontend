@@ -8,17 +8,24 @@
                 <div class="card-header container" style="justify: space-between">
                     <div class='row'>
                         <h5 class='col'>Clientes</h5>
-                       
+                        % if isSearch:
+                            <a href='/clientes'>
+                                <button class='btn btn-sm btn-danger' title='Limpar pesquisa'>
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </a>
+                        % end
                         <form class='col-4' action='/clientes' method='post' enctype='application/json' accept-charset="ISO-8859-1">
                             <input 
                                 class="form-control form-control-sm" 
                                 id="search" 
                                 name="search" 
                                 placeholder="Buscar cliente..." 
-                                min=1
+                                % if search:
+                                value={{ search }}
+                                % end
                                 type="text"/>
                         </form>
-
                         <a href="/clientes/criar">
                             <button type="button" class='btn btn-sm btn-primary mr-3'>
                                 Cadastrar cliente

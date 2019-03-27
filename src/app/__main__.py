@@ -125,18 +125,20 @@ def home():
 
 @root.route('/clientes', method=['GET', 'POST'])
 def showUsers():
-
+    isSearch = False
+    search = None
     urlReq = base_url+'/clientes'
 
     if request.method=='POST':
         search = json.loads(dumps(request.forms))['search']
         if search:
+            isSearch = True
             urlReq = urlReq+'/nome/'+search
 
     req = requests.get(urlReq)
     print(req.json())
     result = req.json()['result']
-    return template(views+'users.tpl', clientes=result)
+    return template(views+'users.tpl', clientes=result, isSearch=isSearch, search=search)
 
 
 @root.route('/clientes/<codigo>', method=['GET', 'POST'])
