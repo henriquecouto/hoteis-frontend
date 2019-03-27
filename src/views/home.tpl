@@ -77,7 +77,6 @@
                 <tbody>
                     <tr>
                         <th scope="col">Cliente</th>
-                        <th scope="col">Data de Entrada</th>
                         <th scope="col">Data de Saída</th>
                         <th scope="col">Quarto</th>
                         <th scope="col">Hóspedes</th>
@@ -90,10 +89,6 @@
                     % saida = str(reserva['saida'])
                     <tr>
                         <th><a href={{"/clientes/"+str(reserva['cliente'])}}>{{reserva['nameCliente']}}</a></th>
-
-                        <td scope="row">
-                            {{entrada[6]}}{{entrada[7]}}/{{entrada[4]}}{{entrada[5]}}/{{entrada[0]}}{{entrada[1]}}{{entrada[2]}}{{entrada[3]}}
-                        </td>
                         <td>{{saida[6]}}{{saida[7]}}/{{saida[4]}}{{saida[5]}}/{{saida[0]}}{{saida[1]}}{{saida[2]}}{{saida[3]}}
                         </td>
                         <td>{{reserva['quarto']}}</td>
