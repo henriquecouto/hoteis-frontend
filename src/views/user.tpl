@@ -3,8 +3,6 @@
 % include('./src/views/head.tpl')
 % include('./src/views/navbar.tpl')
 
-
-
 <body>
     <div class='container'>
 
@@ -65,9 +63,15 @@
                                 <th scope="row">
                                     {{entrada[6]}}{{entrada[7]}}/{{entrada[4]}}{{entrada[5]}}/{{entrada[0]}}{{entrada[1]}}{{entrada[2]}}{{entrada[3]}}
                                 </th>
-                                <td>{{saida[6]}}{{saida[7]}}/{{saida[4]}}{{saida[5]}}/{{saida[0]}}{{saida[1]}}{{saida[2]}}{{saida[3]}}
+                                <td>
+                                    <div class="mytd">
+                                        <span class='saida'>{{saida[6]}}{{saida[7]}}/{{saida[4]}}{{saida[5]}}/{{saida[0]}}{{saida[1]}}{{saida[2]}}{{saida[3]}}</span>
+                                        <span class='diarias'>{{f"{reserva['diarias']} Diárias"}}</span>
+                                    </div>
                                 </td>
-                                <td>{{reserva['quarto']}}</td>
+                                <td>
+                                <a href={{'/quartos/'+str(reserva['quarto'])}}>{{reserva['quarto']}}</a>
+                                </td>
                                 <td>{{reserva['hospedes']}}</td>
                                 <td>{{reserva['status']}}</td>
                                 <td>

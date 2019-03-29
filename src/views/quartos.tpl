@@ -9,6 +9,7 @@
                     <div class='row'>
                         <h5 class='col'>Quartos</h5>
                         % if search:
+                            <p class='col-4'>Buscando por: {{search}}</p>
                             <a href='/quartos'>
                                 <button class='btn btn-sm btn-danger' title='Limpar pesquisa'>
                                     <i class="fas fa-times"></i>
@@ -21,9 +22,6 @@
                                 id="search" 
                                 name="search" 
                                 placeholder="Buscar quarto por tipo ou número..." 
-                                % if search:
-                                value={{ search }}
-                                % end
                                 type="text"/>
                         </form>
                     </div>
@@ -37,6 +35,7 @@
                             <th scope="col">Valor diária</th>
                             <th scope="col">Capacidade</th>
                             <th scope="col">Reservas</th>
+                            <th scope="col">Ocupado</th>
                             <th scope="col">Ações</th>
                         </tr>
                         % for quarto in quartos:
@@ -46,6 +45,7 @@
                             <td>R$ {{quarto['diaria']}}</td>
                             <td>{{quarto['capacidade']}}</td>
                             <td>{{len(quarto['reservas'])}}</td>
+                            <td>{{quarto['ocupado']}}</td>
                             <td>
                             % url = '/quartos/'+str(quarto['numero'])
                                 <a href={{url}} style=' text-decoration: none '>

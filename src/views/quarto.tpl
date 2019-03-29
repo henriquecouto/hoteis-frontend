@@ -25,9 +25,9 @@
                         </div>
                         <ul class="list-group list-group-flush">
                             %for key in quarto:
-                                <li class="list-group-item">
+                            <li class="list-group-item">
                                 <b>{{key.title()}}:</b>
-                                {{quarto[key]}}
+                                {{str(quarto[key]).title()}}
                             </li>
                             %end
                         </ul>
@@ -47,9 +47,9 @@
                         <table class="card-body table mb-0">
                             <tbody>
                             <tr>
+                                <th scope="col">Cliente</th>
                                 <th scope="col">Entrada</th>
                                 <th scope="col">Saída</th>
-                                <th scope="col">Quarto</th>
                                 <th scope="col">Hóspedes</th>
                                 <th scope="col">Status</th>
                                 <th scope="col">Valor</th>
@@ -59,12 +59,20 @@
                             % entrada = str(reserva['entrada'])
                             % saida = str(reserva['saida'])
                             <tr>
-                                <th scope="row">
-                                    {{entrada[6]}}{{entrada[7]}}/{{entrada[4]}}{{entrada[5]}}/{{entrada[0]}}{{entrada[1]}}{{entrada[2]}}{{entrada[3]}}
+                                <th scope='row'>
+                                    <a href={{'/clientes/'+str(reserva['cliente'])}}>
+                                        {{reserva['cliente']}}
+                                    </a>
                                 </th>
-                                <td>{{saida[6]}}{{saida[7]}}/{{saida[4]}}{{saida[5]}}/{{saida[0]}}{{saida[1]}}{{saida[2]}}{{saida[3]}}
+                                <td>
+                                    {{entrada[6]}}{{entrada[7]}}/{{entrada[4]}}{{entrada[5]}}/{{entrada[0]}}{{entrada[1]}}{{entrada[2]}}{{entrada[3]}}
                                 </td>
-                                <td>{{reserva['quarto']}}</td>
+                                <td>
+                                    <div class="mytd">
+                                        <span class='saida'>{{saida[6]}}{{saida[7]}}/{{saida[4]}}{{saida[5]}}/{{saida[0]}}{{saida[1]}}{{saida[2]}}{{saida[3]}}</span>
+                                        <span class='diarias'>{{f"{reserva['diarias']} Diárias"}}</span>
+                                    </div>
+                                </td>
                                 <td>{{reserva['hospedes']}}</td>
                                 <td>{{reserva['status']}}</td>
                                 <td>

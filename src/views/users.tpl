@@ -9,6 +9,7 @@
                     <div class='row'>
                         <h5 class='col'>Clientes</h5>
                         % if search:
+                            <p class='col-4'>Buscando por: {{search}}</p>
                             <a href='/clientes'>
                                 <button class='btn btn-sm btn-danger' title='Limpar pesquisa'>
                                     <i class="fas fa-times"></i>
@@ -21,9 +22,6 @@
                                 id="search" 
                                 name="search" 
                                 placeholder="Buscar cliente..." 
-                                % if search:
-                                value={{ search }}
-                                % end
                                 type="text"/>
                         </form>
                         <a href="/clientes/criar">

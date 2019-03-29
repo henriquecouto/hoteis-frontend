@@ -1,6 +1,7 @@
 import os
 import requests
 import json
+from datetime import datetime as dt
 import datetime
 from bson.json_util import dumps
 from bottle import Bottle, template, request, static_file
@@ -11,6 +12,19 @@ root = Bottle()
 base_url = 'http://localhost:8080'
 views = './src/views/'
 static = './src/static'
+
+def subtrairDatas(dataStart, dataEnd):
+
+    dataStart = str(dataStart)
+    dataStart = dataStart[0]+dataStart[1]+dataStart[2]+dataStart[3]+'-'+dataStart[4]+dataStart[5]+'-'+dataStart[6]+dataStart[7]
+
+    dataEnd = str(dataEnd)
+    dataEnd = dataEnd[0]+dataEnd[1]+dataEnd[2]+dataEnd[3]+'-'+dataEnd[4]+dataEnd[5]+'-'+dataEnd[6]+dataEnd[7]
+
+    d2 = dt.strptime(dataEnd, '%Y-%m-%d')
+    d1 = dt.strptime(dataStart, '%Y-%m-%d')
+    quantidade_dias = abs((d2 - d1).days)
+    return quantidade_dias
 
 def changeReservaStatus(request):
     error = None
@@ -51,10 +65,6 @@ def changeReservaStatus(request):
 @root.get('/static/logo')
 def getLogo():
     return static_file('logo.png', root=static)
-
-@root.get('/style')
-def getLogo():
-    return static_file('style.css', root=static)
 
 dateR = ''
 monthR = None
@@ -152,6 +162,13 @@ def infoUser(codigo):
         'contato': result['contato']
     }
     reservas = result['reservas']
+
+    for reserva in reservas:
+        reserva['diarias'] = subtrairDatas(reserva['entrada'], reserva['saida'])
+        reqQuarto = requests.get(base_url+'/quartos/'+str(reserva['quarto']))
+        q = reqQuarto.json()['result']
+        print(q)
+        reserva['tipoQuarto'], reserva['diariaQuarto'] = q['tipo'], q['diaria']
 
     return template(views+'user.tpl', cliente=cliente, reservas=reservas, error=error)
 
@@ -265,9 +282,11 @@ def showQuartos():
 
     req = requests.get(urlReq)
     print(req.json())
-    result = req.json()['result']
+    quartos = req.json()['result']
+    for quarto in quartos:
+        quarto['ocupado'] = requests.get(base_url+'/quartos/ocupado/'+str(quarto['numero'])).json()['result']
 
-    return template(views+'quartos.tpl', quartos=result, search=search)
+    return template(views+'quartos.tpl', quartos=quartos, search=search)
 
 
 @root.route('/quartos/<numero>', method=['GET', 'POST'])
@@ -284,7 +303,17 @@ def infoQuarto(numero):
         'diaria': result['diaria'],
         'capacidade': result['capacidade']
     }
+
+    quarto['ocupado'] = requests.get(base_url+'/quartos/ocupado/'+str(quarto['numero'])).json()['result']
+
     reservas = result['reservas']
+
+    for reserva in reservas:
+        reserva['diarias'] = subtrairDatas(reserva['entrada'], reserva['saida'])
+        reqQuarto = requests.get(base_url+'/quartos/'+str(reserva['quarto']))
+        q = reqQuarto.json()['result']
+        print(q)
+        reserva['tipoQuarto'], reserva['diariaQuarto'] = q['tipo'], q['diaria']
 
     return template(views+'quarto.tpl', quarto=quarto, reservas=reservas, error=error)
 

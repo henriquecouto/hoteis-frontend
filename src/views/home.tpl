@@ -81,7 +81,6 @@
                         <th scope="col">Quarto</th>
                         <th scope="col">Hóspedes</th>
                         <th scope="col">Status</th>
-                        <th scope="col">Valor</th>
                         <th scope="col">Ações</th>
                     </tr>
                     % for reserva in reservas:
@@ -95,33 +94,14 @@
                         <td>{{reserva['hospedes']}}</td>
                         <td>{{reserva['status']}}</td>
                         <td>
-                            % if 'valor' in reserva:
-                            {{reserva['valor']}}
-                            % end
-                        </td>
-                        <td>
-                            % if reserva['status'] == 'Aguardando':
                             % popup = {'nome': 'Check-In', 'type': 'reserva', 'url': 'popup-ci-'+reserva['_id']['$oid']}
                             <a href={{"#popup-ci-"+reserva['_id']['$oid']}}>
-                                <button class="btn btn-primary">
+                                <button class="btn btn-primary" title='Check-In'>
                                     <i class="fas fa-check-square"></i>
                                 </button>
                             </a>
 
                             %include('./src/views/popup.tpl')
-
-                            %end
-                            % if reserva['status'] == 'Check-In':
-                            % popup = {'nome': 'Check-Out', 'type': 'reserva', 'url': 'popup-co-'+reserva['_id']['$oid']}
-                            <a href={{"#popup-co-"+reserva['_id']['$oid']}}>
-                                <button class="btn btn-primary">
-                                    <i class="fas fa-sign-out-alt"></i>
-                                </button>
-                            </a>
-                            
-                            %include('./src/views/popup.tpl')
-
-                            %end
                         </td>
                     </tr>
                     % end
