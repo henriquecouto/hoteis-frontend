@@ -7,8 +7,8 @@ from bottle import Bottle, template, request, static_file
 
 root = Bottle()
 
-base_url = 'https://hoteltop.herokuapp.com'
-# base_url = 'http://localhost:8080'
+# base_url = 'https://hoteltop.herokuapp.com'
+base_url = 'http://localhost:8080'
 views = './src/views/'
 static = './src/static'
 
@@ -125,20 +125,18 @@ def home():
 
 @root.route('/clientes', method=['GET', 'POST'])
 def showUsers():
-    isSearch = False
     search = None
     urlReq = base_url+'/clientes'
 
     if request.method=='POST':
         search = json.loads(dumps(request.forms))['search']
         if search:
-            isSearch = True
             urlReq = urlReq+'/nome/'+search
 
     req = requests.get(urlReq)
     print(req.json())
     result = req.json()['result']
-    return template(views+'users.tpl', clientes=result, isSearch=isSearch, search=search)
+    return template(views+'users.tpl', clientes=result, search=search)
 
 
 @root.route('/clientes/<codigo>', method=['GET', 'POST'])
@@ -254,11 +252,22 @@ def getAllReservas():
 
     return template(views+'reservas.tpl', reservas=reservas, month=int(just_month))
 
-@root.get('/quartos')
+@root.route('/quartos', method=['GET', 'POST'])
 def showQuartos():
-    req = requests.get(base_url+'/quartos')
+
+    search = None
+    urlReq = base_url+'/quartos'
+
+    if request.method=='POST':
+        search = json.loads(dumps(request.forms))['search']
+        if search:
+            urlReq = urlReq+'/search/'+search
+
+    req = requests.get(urlReq)
+    print(req.json())
     result = req.json()['result']
-    return template(views+'quartos.tpl', quartos=result)
+
+    return template(views+'quartos.tpl', quartos=result, search=search)
 
 
 @root.route('/quartos/<numero>', method=['GET', 'POST'])

@@ -8,7 +8,7 @@
                 <div class="card-header container" style="justify: space-between">
                     <div class='row'>
                         <h5 class='col'>Clientes</h5>
-                        % if isSearch:
+                        % if search:
                             <a href='/clientes'>
                                 <button class='btn btn-sm btn-danger' title='Limpar pesquisa'>
                                     <i class="fas fa-times"></i>

@@ -8,6 +8,24 @@
                 <div class="card-header container">
                     <div class='row'>
                         <h5 class='col'>Quartos</h5>
+                        % if search:
+                            <a href='/quartos'>
+                                <button class='btn btn-sm btn-danger' title='Limpar pesquisa'>
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </a>
+                        % end
+                        <form class='col-4' action='/quartos' method='post' enctype='application/json' accept-charset="ISO-8859-1">
+                            <input 
+                                class="form-control form-control-sm" 
+                                id="search" 
+                                name="search" 
+                                placeholder="Buscar quarto por tipo ou número..." 
+                                % if search:
+                                value={{ search }}
+                                % end
+                                type="text"/>
+                        </form>
                     </div>
                 </div>
                 <table class="card-body table mb-0">
