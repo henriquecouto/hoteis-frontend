@@ -8,8 +8,8 @@ from bottle import Bottle, template, request, static_file
 
 root = Bottle()
 
-# base_url = 'https://hoteltop.herokuapp.com'
-base_url = 'http://localhost:8080'
+base_url = 'https://hoteltop.herokuapp.com'
+# base_url = 'http://localhost:8080'
 views = './src/views/'
 static = './src/static'
 
@@ -319,7 +319,7 @@ def infoQuarto(numero):
 
 
 # heroku
-# root.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+root.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
 
 # Local
-root.run(host='localhost', port=8081, debug=True, reloader=True)
+# root.run(host='localhost', port=8081, debug=True, reloader=True)
